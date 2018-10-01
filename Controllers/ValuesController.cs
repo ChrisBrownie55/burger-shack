@@ -7,11 +7,13 @@ using Microsoft.AspNetCore.Mvc;
 namespace burgershack.Controllers {
   [Route("api/[controller]")]
   [ApiController]
-  public class ValuesController : ControllerBase {
+  public class ValuesController : Controller { // apparently Controller is better than ControllerBase
     // GET api/values
-    [HttpGet]
+    [HttpGet] // <- a decorator (extends functionality on the thing it is attached to) (c# calls them attributes tho)
     public ActionResult<IEnumerable<string>> Get() {
-      return new string[] { "value1", "value2" };
+      // ActionResult is a way to respond to a web request
+      // IEnumerable represents anything you can iterate over
+      return new string[] { "value1", "value2", "value3", "value4" };
     }
 
     // GET api/values/5
