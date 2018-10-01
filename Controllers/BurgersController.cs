@@ -14,7 +14,7 @@ namespace burgershack.Controllers {
       burgers.Add(new Burger("The plain Joe", "Burger on a bun, bacon", 7.99m));
       burgers.Add(new Burger("The plain John", "Burger on a seed bun", 7.99m));
       burgers.Add(new Burger("The plain Doe", "Bun on a burger", 7.99m));
-      burgers.Add(new Burger("The plain Nut", "Just the paddy", 7.99m));
+      burgers.Add(new Burger("The plain", "Just the paddy", 7.99m));
     }
 
     [HttpGet]
