@@ -32,7 +32,7 @@ namespace burgershack.Repositories {
           INSERT INTO {TableName} (name, description, price) VALUES (@Name, @Description, @Price);
           SELECT LAST_INSERT_ID();
         ", burger);
-        burger.id = id;
+        burger.Id = id;
         return burger;
       } catch (SqlException error) {
         System.Console.WriteLine(error.Message);

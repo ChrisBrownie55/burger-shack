@@ -12,12 +12,17 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using MySql.Data.MySqlClient;
 
 namespace burgershack {
   public class Startup {
     // stuff is only registered in this file
+
+    private readonly string _connectionString = "";
+
     public Startup(IConfiguration configuration) {
       Configuration = configuration;
+      _connectionString = configuration.GetSection("DB").GetValue<string>("MySqlConnectionString");
     }
 
     public IConfiguration Configuration { get; }
@@ -28,12 +33,15 @@ namespace burgershack {
       // all about pulling in 3rd party libraries and configuring them.
 
       services.AddTransient<IDbConnection>(x => CreateDBContext());
+
       services.AddTransient<BurgersRepository>();
       services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
     }
 
     private IDbConnection CreateDBContext() {
-      
+      MySqlConnection connection = new MySqlConnection(_connectionString);
+      connection.Open();
+      return connection;
     }
 
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

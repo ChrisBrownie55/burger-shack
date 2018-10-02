@@ -2,30 +2,28 @@ using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 
 using burgershack.Models;
+using burgershack.Repositories;
 
 namespace burgershack.Controllers {
   [Route("api/[controller]")]
   [ApiController]
   public class BurgersController : Controller {
-
-    List<Burger> burgers = new List<Burger>();
-    public BurgersController() {
-      burgers.Add(new Burger("The plain Jane", "Burger on a bun", 7.99m));
-      burgers.Add(new Burger("The plain Joe", "Burger on a bun, bacon", 7.99m));
-      burgers.Add(new Burger("The plain John", "Burger on a seed bun", 7.99m));
-      burgers.Add(new Burger("The plain Doe", "Bun on a burger", 7.99m));
-      burgers.Add(new Burger("The plain", "Just the paddy", 7.99m));
+    BurgersRepository _repo;
+    public BurgersController(BurgersRepository repo) {
+      _repo = repo;
     }
 
     [HttpGet]
     public IEnumerable<Burger> Get() {
-      return burgers;
+      return _repo.GetAll();
     }
 
     [HttpPost]
     public Burger Post([FromBody] Burger burger) {
-      burgers.Add(burger);
-      return burger;
+      if (!ModelState.IsValid) {
+        throw new System.Exception("Invalid burger");
+      }
+      return _repo.Create(burger);
     }
   }
 }
