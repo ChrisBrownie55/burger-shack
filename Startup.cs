@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
+using burgershack.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -24,7 +26,14 @@ namespace burgershack {
     public void ConfigureServices(IServiceCollection services) {
       // the same as configuring body-parser in node
       // all about pulling in 3rd party libraries and configuring them.
+
+      services.AddTransient<IDbConnection>(x => CreateDBContext());
+      services.AddTransient<BurgersRepository>();
       services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+    }
+
+    private IDbConnection CreateDBContext() {
+      
     }
 
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
