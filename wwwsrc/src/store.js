@@ -10,6 +10,12 @@ const server = Axios.create({
 
 Vue.use(Vuex)
 
+const logError = error => console.log(
+  '%c[ERROR]',
+  'font-weight: bold; color: #222; font-size: 0.85rem; border-bottom: solid 1px #222; padding: 0.15rem; background-color: rgba(0, 0, 0, 0.015);',
+  error
+)
+
 export default new Vuex.Store({
   state: {
     burgers: []
@@ -22,10 +28,10 @@ export default new Vuex.Store({
   actions: {
     async getBurgers({ commit }) {
       try {
-        const { data: burgers } = server.get('burgers')
+        const burgers = await (await fetch('//localhost:5000/api/burgers')).json()
         commit('setBurgers', burgers)
       } catch (error) {
-        console.log("%c[ERROR] ", "font-weight: bold; color: red;", error)
+        logError(error)
       }
     }
   }
