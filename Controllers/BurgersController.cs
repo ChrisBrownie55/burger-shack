@@ -8,7 +8,7 @@ namespace burgershack.Controllers {
   [Route("api/[controller]")]
   [ApiController]
   public class BurgersController : Controller {
-    BurgersRepository _repo;
+    SmoothiesRepository _repo;
     public BurgersController(BurgersRepository repo) {
       _repo = repo;
     }

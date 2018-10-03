@@ -2,20 +2,19 @@ using System;
 using System.Collections.Generic;
 using burgershack.Models;
 using Microsoft.AspNetCore.Mvc;
-using burgershack.Models;
 using burgershack.Repositories;
 
 namespace burgershack.Controllers {
     [Route("api/[controller]")]
     [ApiController]
-    SmoothiesRepository _repo;
     public class SmoothiesController : Controller {
+      SmoothiesRepository _repo;
       public SmoothiesController(SmoothiesRepository repo) {
         _repo = repo;
       }
       [HttpGet]
       public IEnumerable<Smoothie> Get() {
-        _repo.GetAll();
+        return _repo.GetAll();
       }
       [HttpPost]
       public Smoothie Post([FromBody] Smoothie smoothie) {

@@ -32,10 +32,23 @@ namespace burgershack {
       // the same as configuring body-parser in node
       // all about pulling in 3rd party libraries and configuring them.
 
+
+      services.AddCors(options => {
+        options.AddPolicy("CorsDevPolicy", builder => {
+          builder
+            .AllowAnyOrigin()
+            .AllowAnyMethod()
+            .AllowAnyHeader()
+            .AllowCredentials();
+        });
+      });
+      services.AddMvc();
+
       services.AddTransient<IDbConnection>(x => CreateDBContext());
 
       services.AddTransient<BurgersRepository>();
-      services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+      services.AddTransient<SmoothiesRepository>();
+      // services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
     }
 
     private IDbConnection CreateDBContext() {
@@ -49,11 +62,13 @@ namespace burgershack {
       // where you would say `app.use(bodyparser)`
       if (env.IsDevelopment()) {
         app.UseDeveloperExceptionPage();
+        app.UseCors("CorsDevPolicy");
       } else {
         app.UseHsts();
       }
+      app.UseDefaultFiles();
+      app.UseStaticFiles();
 
-      app.UseHttpsRedirection();
       app.UseMvc();
     }
   }
