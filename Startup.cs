@@ -4,6 +4,7 @@ using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using burgershack.Repositories;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -29,8 +30,15 @@ namespace burgershack {
 
     // This method gets called by the runtime. Use this method to add services to the container.
     public void ConfigureServices(IServiceCollection services) {
-      // the same as configuring body-parser in node
-      // all about pulling in 3rd party libraries and configuring them.
+      // Add user authentication through JsonWebTokens
+      services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+        .AddCookie(options => {
+          options.LoginPath = "/Account/Login";
+          options.Events.OnRedirectToLogin = context => {
+            context.Response.StatusCode = 401;
+            return Task.CompletedTask;
+          };
+        });
 
 
       services.AddCors(options => {
@@ -48,6 +56,7 @@ namespace burgershack {
 
       services.AddTransient<BurgersRepository>();
       services.AddTransient<SmoothiesRepository>();
+      services.AddTransient<UserRepository>();
       // services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
     }
 
@@ -68,6 +77,8 @@ namespace burgershack {
       }
       app.UseDefaultFiles();
       app.UseStaticFiles();
+
+      app.UseAuthentication();
 
       app.UseMvc();
     }

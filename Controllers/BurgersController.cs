@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 
 using burgershack.Models;
 using burgershack.Repositories;
+using Microsoft.AspNetCore.Authorization;
 
 namespace burgershack.Controllers {
   [Route("api/[controller]")]
@@ -18,6 +19,7 @@ namespace burgershack.Controllers {
       return _repo.GetAll();
     }
 
+    [Authorize]
     [HttpPost]
     public Burger Post([FromBody] Burger burger) {
       if (!ModelState.IsValid) {
