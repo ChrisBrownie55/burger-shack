@@ -56,5 +56,13 @@ namespace burgershack.Repositories {
       // 1 is deleted, 0 is error
       return _db.Execute($"DELETE FROM {TableName} WHERE id = @id;", new { id }) == 1;
     }
+
+    public IEnumerable<Burger> GetBurgersByUserId(string id) {
+      return _db.Query<Burger>(@"
+        SELECT * FROM userburgers
+        JOIN burgers ON burgers.id = userburgers.burgerId
+        WHERE userId = @id;
+      ", new { id });
+    }
   }
 }
